@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Submission Success{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-success">
+            <div class="card-header bg-success text-white">
+                <h3><i class="bi bi-check-circle"></i> Form Submitted Successfully!</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <strong>Thank you!</strong> Your submission has been received.
+                </div>
+                
+                <h5>Submission Details:</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Name:</strong> {{ submission.first_name }} {{ submission.last_name }}</p>
+                        <p><strong>Email:</strong> {{ submission.email }}</p>
+                        <p><strong>Phone:</strong> {{ submission.phone }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Age:</strong> {{ submission.age }}</p>
+                        <p><strong>Gender:</strong> {{ submission.get_gender_display }}</p>
+                        <p><strong>Newsletter:</strong> {% if submission.newsletter %}Yes{% else %}No{% endif %}</p>
+                    </div>
+                </div>
+                
+                {% if submission.message %}
+                <div class="mt-3">
+                    <h6>Message:</h6>
+                    <div class="border p-3 bg-light">
+                        {{ submission.message }}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="mt-4">
+                    <a href="{% url 'submission_form' %}" class="btn btn-primary">Submit Another Form</a>
+                    <a href="{% url 'submission_list' %}" class="btn btn-secondary">View All Submissions</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
