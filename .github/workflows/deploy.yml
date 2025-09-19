@@ -25,10 +25,31 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           push: true
-          tags: randomsummer/fake-webapp:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/fake-webapp:latest
 
-      # Step 4: Deploy on Linode via SSH
+      # Step 4: Copy docker-compose.yml (and optionally .env) to server
+      - name: Copy docker-compose.yml to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "docker-compose.yml"
+          target: "~/fake"
+
+      # Optional: also copy .env if you want GitHub to manage it
+      # - name: Copy .env to server
+      #   uses: appleboy/scp-action@v0.1.7
+      #   with:
+      #     host: ${{ secrets.SERVER_IP }}
+      #     username: ${{ secrets.SERVER_USER }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     source: ".env"
+      #     target: "~/fake"
+
+      # Step 5: Deploy on Linode via SSH
       - name: Deploy on server
         uses: appleboy/ssh-action@v1.2.0
         with:
