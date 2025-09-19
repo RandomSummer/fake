@@ -26,7 +26,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/fake-webapp:latest
+          tags: randomsummer/fake-webapp:latest
 
       # Step 4: Deploy on Linode via SSH
       - name: Deploy on server
