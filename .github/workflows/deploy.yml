@@ -43,7 +43,7 @@ jobs:
             set -e
             cd ~/fake
 
-            # Force the working tree to match the remote (avoids "unstaged changes" error)
+            # force sync to remote
             git fetch origin
             git reset --hard origin/master
             git clean -fd
