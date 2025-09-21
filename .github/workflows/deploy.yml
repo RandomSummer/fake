@@ -43,16 +43,14 @@ jobs:
             set -e
             cd ~/fake
 
-            # Make sure repo is up to date
-            git pull --rebase
+            # Force the working tree to match the remote (avoids "unstaged changes" error)
+            git fetch origin
+            git reset --hard origin/master
+            git clean -fd
 
-            # Export username for docker-compose substitution if needed
             export DOCKER_USERNAME="${{ secrets.DOCKER_USERNAME }}"
 
-            # Deploy the updated image
             docker compose pull
-            docker compose up -d --build
-
-            # Run Django tasks
+            docker compose up -d --remove-orphans
             docker exec fake_web python manage.py migrate --noinput
             docker exec fake_web python manage.py collectstatic --noinput
